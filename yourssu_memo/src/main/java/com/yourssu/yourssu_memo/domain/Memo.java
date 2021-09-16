@@ -23,9 +23,9 @@ public class Memo {
     private String text;
 
     //@Temporal(TemporalType.TIMESTAMP)
-    private String createAt;
+    private String createdAt;
 
     //@Temporal(TemporalType.TIMESTAMP)
-    private String updateAt;
+    private String updatedAt;
 
 }
