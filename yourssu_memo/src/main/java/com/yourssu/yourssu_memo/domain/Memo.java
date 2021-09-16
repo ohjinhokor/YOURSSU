@@ -4,28 +4,33 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
-@Getter@Setter
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Getter
 public class Memo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memo_id")
     private Long id;
 
-    @Column
     private String title;
 
-    @Lob
     private String text;
 
-    //@Temporal(TemporalType.TIMESTAMP)
     private String createAt;
 
-    //@Temporal(TemporalType.TIMESTAMP)
     private String updateAt;
 
+    public Memo(DbMemo dbMemo) {
+
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        this.id = dbMemo.getId();
+        this.title = dbMemo.getTitle();
+        this.text = dbMemo.getTitle();
+        this.createAt = transFormat.format(dbMemo.getCreateAt());
+        System.out.println(this.createAt.getClass());
+        this.updateAt = transFormat.format(dbMemo.getUpdateAt());
+        System.out.println("33333");
+    }
 }

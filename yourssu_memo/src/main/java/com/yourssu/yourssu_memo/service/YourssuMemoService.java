@@ -1,5 +1,6 @@
 package com.yourssu.yourssu_memo.service;
 
+import com.yourssu.yourssu_memo.domain.DbMemo;
 import com.yourssu.yourssu_memo.domain.Memo;
 import com.yourssu.yourssu_memo.dtos.request.RequestCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
@@ -10,7 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -22,18 +28,18 @@ public class YourssuMemoService implements MemoService {
     @Transactional
     public ResponseCreateMemoDto saveMemo(RequestCreateMemoDto requestCreateMemoDto) {
 
-        SimpleDateFormat time = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
 
-        String now = time.format(System.currentTimeMillis());
+        DbMemo dbmemo = new DbMemo();
+        dbmemo.setTitle(requestCreateMemoDto.getTitle());
+        dbmemo.setText(requestCreateMemoDto.getText());
 
-        Memo memo = new Memo();
-        memo.setTitle(requestCreateMemoDto.getTitle());
-        memo.setText(requestCreateMemoDto.getText());
+        dbmemo.setCreateAt(now);
+        dbmemo.setUpdateAt(now);
 
-        memo.setCreateAt(now);
-        memo.setUpdateAt(now);
+        System.out.println("여기");
 
-        return memoRepository.save(memo);
+        return memoRepository.save(dbmemo);
     }
 
     @Override
