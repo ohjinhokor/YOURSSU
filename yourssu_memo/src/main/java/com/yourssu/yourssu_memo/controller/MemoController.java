@@ -4,15 +4,14 @@ import com.yourssu.yourssu_memo.dtos.request.RequestCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseShowByPageMenuDto;
+import com.yourssu.yourssu_memo.dtos.response.ResponseShowMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseUpdateMemoDto;
 import com.yourssu.yourssu_memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
@@ -37,13 +36,17 @@ public class MemoController {
 
     @DeleteMapping(path = "{memoId}")
     @ResponseBody
-    public void deleteMemo(@PathVariable(name = "memoId") Long Id) {
-        memoService.deleteMemo(Id);
+    public void deleteMemo(@PathVariable(name = "memoId") Long id) {
+        memoService.deleteMemo(id);
     }
 
     @GetMapping
     @ResponseBody
-    public ResponseShowByPageMenuDto showMemoByPage(@RequestParam("date") String date, @RequestParam("page") int page) {
+    public ResponseShowByPageMenuDto showMemoByPage(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")Date date, @RequestParam("page") int page) {
         return memoService.showMemoByPage(date, page);
     }
+
+    @GetMapping(path="{memoId}")
+    @ResponseBody
+    public ResponseShowMemoDto showMemoById(@PathVariable(name = "memoId") Long id){return memoService.showMemoById(id);}
 }

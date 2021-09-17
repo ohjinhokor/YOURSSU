@@ -5,6 +5,7 @@ import com.yourssu.yourssu_memo.domain.Memo;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseShowByPageMenuDto;
+import com.yourssu.yourssu_memo.dtos.response.ResponseShowMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseUpdateMemoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -56,21 +58,23 @@ public class YourssuMemoRepository implements MemoRepository {
 
         List<DbMemo> dbmemoList = em.createQuery("select m from DbMemo m where m.createdAt > :searchDate", DbMemo.class)
                 .setParameter("searchDate", searchDate)
-                .setFirstResult((page - 1) * 5)
-                .setMaxResults((page) * 5 - 1)
                 .getResultList();
 
-        System.out.println("dbmemoList = " + dbmemoList);
+        Collections.reverse(dbmemoList);
         List<Memo> memoList = new ArrayList<>();
 
-        for (DbMemo dbMemo : dbmemoList) {
-            memoList.add(new Memo(dbMemo));
-        }
-
-        for ( DbMemo dbMemo : dbmemoList) {
-            System.out.println("memo = " + dbMemo.getText());
+        for (int i = (page-1) *5; i<= page*5-1; i++) {
+            if(i >=dbmemoList.size()){
+                break;
+            }
+            memoList.add(new Memo(dbmemoList.get(i)));
         }
         return new ResponseShowByPageMenuDto(memoList);
+    }
 
+    @Override
+    public ResponseShowMemoDto show(Long id) {
+        DbMemo findMemo = em.find(DbMemo.class, id);
+        return new ResponseShowMemoDto(new Memo(findMemo));
     }
 }

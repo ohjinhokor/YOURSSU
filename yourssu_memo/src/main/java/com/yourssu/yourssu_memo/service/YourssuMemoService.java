@@ -6,6 +6,7 @@ import com.yourssu.yourssu_memo.dtos.request.RequestCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseShowByPageMenuDto;
+import com.yourssu.yourssu_memo.dtos.response.ResponseShowMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseUpdateMemoDto;
 import com.yourssu.yourssu_memo.repository.MemoRepository;
 
@@ -55,14 +56,12 @@ public class YourssuMemoService implements MemoService {
     }
 
     @Override
-    public ResponseShowByPageMenuDto showMemoByPage(String date, int page) {
+    public ResponseShowByPageMenuDto showMemoByPage(Date date, int page) {
+        return memoRepository.showByPage(date, page);
+    }
 
-
-        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        ParsePosition pos = new ParsePosition(0);
-        Date searchDate = fm.parse(date,pos);
-
-        return memoRepository.showByPage(searchDate, page);
+    @Override
+    public ResponseShowMemoDto showMemoById(Long id) {
+        return memoRepository.show(id);
     }
 }

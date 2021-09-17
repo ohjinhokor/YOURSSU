@@ -5,6 +5,7 @@ import com.yourssu.yourssu_memo.domain.Memo;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseCreateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseShowByPageMenuDto;
+import com.yourssu.yourssu_memo.dtos.response.ResponseShowMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseUpdateMemoDto;
 
 import java.time.LocalDate;
@@ -20,4 +21,6 @@ public interface MemoRepository {
     void delete(Long id);
 
     ResponseShowByPageMenuDto showByPage(Date searchDate, int page);
+
+    ResponseShowMemoDto show(Long id);
 }
