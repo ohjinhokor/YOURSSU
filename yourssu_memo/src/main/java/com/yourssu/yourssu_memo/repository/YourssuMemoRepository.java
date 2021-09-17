@@ -1,5 +1,6 @@
 package com.yourssu.yourssu_memo.repository;
 
+import com.yourssu.yourssu_memo.domain.DbMemo;
 import com.yourssu.yourssu_memo.domain.Memo;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseCreateMemoDto;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +23,10 @@ public class YourssuMemoRepository implements MemoRepository {
     private final EntityManager em;
 
     @Override
-    public ResponseCreateMemoDto save(Memo memo) {
-        em.persist(memo);
+    public ResponseCreateMemoDto save(DbMemo dbMemo) {
+        em.persist(dbMemo);
 
+        Memo memo = new Memo(dbMemo);
         ResponseCreateMemoDto responseCreateMemoDto = new ResponseCreateMemoDto(memo);
 
         return responseCreateMemoDto;
@@ -31,31 +34,42 @@ public class YourssuMemoRepository implements MemoRepository {
 
     @Override
     public ResponseUpdateMemoDto update(Long id, RequestUpdateMemoDto memo) {
-        Memo updateMemo = em.find(Memo.class, id);
+
+        Date now = new Date();
+        DbMemo updateMemo = em.find(DbMemo.class, id);
 
         updateMemo.setTitle(memo.getTitle());
         updateMemo.setText(memo.getText());
+        updateMemo.setUpdatedAt(now);
 
-        return new ResponseUpdateMemoDto(updateMemo);
+        Memo newMemo = new Memo(updateMemo);
+        return new ResponseUpdateMemoDto(newMemo);
     }
 
     public void delete(Long id) {
-        Memo deleteMemo = em.find(Memo.class, id);
+        DbMemo deleteMemo = em.find(DbMemo.class, id);
         em.remove(deleteMemo);
     }
 
     @Override
     public ResponseShowByPageMenuDto showByPage(Date searchDate, int page) {
-        System.out.println("3");
-        String searchDate1 = "2020-03-15";
-        List<Memo> memoList = em.createQuery("select m from Memo m where m.createdAt<:searchDate", Memo.class)
-                .setParameter("searchDate", searchDate1)
+
+        List<DbMemo> dbmemoList = em.createQuery("select m from DbMemo m where m.createdAt > :searchDate", DbMemo.class)
+                .setParameter("searchDate", searchDate)
                 .setFirstResult((page - 1) * 5)
                 .setMaxResults((page) * 5 - 1)
                 .getResultList();
 
-        System.out.println("5");
-        System.out.println("memoList = " + memoList);
+        System.out.println("dbmemoList = " + dbmemoList);
+        List<Memo> memoList = new ArrayList<>();
+
+        for (DbMemo dbMemo : dbmemoList) {
+            memoList.add(new Memo(dbMemo));
+        }
+
+        for ( DbMemo dbMemo : dbmemoList) {
+            System.out.println("memo = " + dbMemo.getText());
+        }
         return new ResponseShowByPageMenuDto(memoList);
 
     }

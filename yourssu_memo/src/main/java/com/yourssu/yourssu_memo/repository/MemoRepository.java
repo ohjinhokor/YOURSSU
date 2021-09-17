@@ -1,5 +1,6 @@
 package com.yourssu.yourssu_memo.repository;
 
+import com.yourssu.yourssu_memo.domain.DbMemo;
 import com.yourssu.yourssu_memo.domain.Memo;
 import com.yourssu.yourssu_memo.dtos.request.RequestUpdateMemoDto;
 import com.yourssu.yourssu_memo.dtos.response.ResponseCreateMemoDto;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 public interface MemoRepository {
 
-    ResponseCreateMemoDto save(Memo memo);
+    ResponseCreateMemoDto save(DbMemo memo);
 
     ResponseUpdateMemoDto update(Long id, RequestUpdateMemoDto memo);
 

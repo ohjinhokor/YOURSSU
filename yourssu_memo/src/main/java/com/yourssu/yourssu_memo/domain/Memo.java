@@ -1,31 +1,29 @@
 package com.yourssu.yourssu_memo.domain;
 
 import lombok.Getter;
-import lombok.Setter;
+import java.text.SimpleDateFormat;
 
-import javax.persistence.*;
-import java.util.Date;
-
-@Getter@Setter
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Getter
 public class Memo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memo_id")
     private Long id;
 
-    @Column
     private String title;
 
-    @Lob
     private String text;
 
-    //@Temporal(TemporalType.TIMESTAMP)
     private String createdAt;
 
-    //@Temporal(TemporalType.TIMESTAMP)
     private String updatedAt;
 
+    public Memo(DbMemo dbMemo) {
+
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        this.id = dbMemo.getId();
+        this.title = dbMemo.getTitle();
+        this.text = dbMemo.getText();
+        this.createdAt = transFormat.format(dbMemo.getCreatedAt());
+        this.updatedAt = transFormat.format(dbMemo.getUpdatedAt());
+    }
 }

@@ -11,6 +11,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 @RequestMapping(path="/memos")
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class MemoController {
     @PostMapping
     @ResponseBody
     public ResponseCreateMemoDto saveMemo(@RequestBody RequestCreateMemoDto requestCreateMemoDto) {
+
         return memoService.saveMemo(requestCreateMemoDto);
     }
 
@@ -39,7 +44,6 @@ public class MemoController {
     @GetMapping
     @ResponseBody
     public ResponseShowByPageMenuDto showMemoByPage(@RequestParam("date") String date, @RequestParam("page") int page) {
-        System.out.println("1");
         return memoService.showMemoByPage(date, page);
     }
 }
