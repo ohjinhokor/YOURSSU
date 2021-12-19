@@ -4,9 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class RequestCreateMemoDto {
-
     private String title;
 
     private String text;
 
+    public RequestCreateMemoDto(){
+
+    }
 }

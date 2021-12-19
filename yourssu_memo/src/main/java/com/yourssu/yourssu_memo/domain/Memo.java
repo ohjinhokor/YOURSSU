@@ -16,6 +16,9 @@ public class Memo {
 
     private String updatedAt;
 
+//    public Memo(){
+//
+//    }
     public Memo(DbMemo dbMemo) {
 
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

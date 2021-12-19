@@ -35,7 +35,6 @@ public class YourssuMemoService implements MemoService {
         dbmemo.setCreatedAt(now);
         dbmemo.setUpdatedAt(now);
 
-
         return memoRepository.save(dbmemo);
     }
 

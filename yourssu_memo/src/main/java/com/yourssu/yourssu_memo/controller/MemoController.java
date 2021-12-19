@@ -14,39 +14,36 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+
 @Controller
 @RequestMapping(path="/memos")
 @RequiredArgsConstructor
+@ResponseBody
 public class MemoController {
 
     private final MemoService memoService;
 
     @PostMapping
-    @ResponseBody
     public ResponseCreateMemoDto saveMemo(@RequestBody RequestCreateMemoDto requestCreateMemoDto) {
 
         return memoService.saveMemo(requestCreateMemoDto);
     }
 
     @PutMapping(path = "{memoId}")
-    @ResponseBody
     public ResponseUpdateMemoDto updateMemo(@PathVariable(name = "memoId") Long Id, @RequestBody RequestUpdateMemoDto requestUpdateMemoDto) {
         return memoService.updateMemo(Id, requestUpdateMemoDto);
     }
 
     @DeleteMapping(path = "{memoId}")
-    @ResponseBody
     public void deleteMemo(@PathVariable(name = "memoId") Long id) {
         memoService.deleteMemo(id);
     }
 
     @GetMapping
-    @ResponseBody
     public ResponseShowByPageMenuDto showMemoByPage(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")Date date, @RequestParam("page") int page) {
         return memoService.showMemoByPage(date, page);
     }
 
     @GetMapping(path="{memoId}")
-    @ResponseBody
     public ResponseShowMemoDto showMemoById(@PathVariable(name = "memoId") Long id){return memoService.showMemoById(id);}
 }
