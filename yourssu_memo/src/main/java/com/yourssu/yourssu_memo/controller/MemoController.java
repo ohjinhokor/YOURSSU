@@ -25,7 +25,6 @@ public class MemoController {
 
     @PostMapping
     public ResponseCreateMemoDto saveMemo(@RequestBody RequestCreateMemoDto requestCreateMemoDto) {
-
         return memoService.saveMemo(requestCreateMemoDto);
     }
 

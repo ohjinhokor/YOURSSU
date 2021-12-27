@@ -27,9 +27,8 @@ public class YourssuMemoRepository implements MemoRepository {
     @Override
     public ResponseCreateMemoDto save(DbMemo dbMemo) {
 
-
         Memo memo = new Memo(dbMemo);
-        em.persist(memo);
+        em.persist(dbMemo);
         ResponseCreateMemoDto responseCreateMemoDto = new ResponseCreateMemoDto(memo);
 
         return responseCreateMemoDto;
